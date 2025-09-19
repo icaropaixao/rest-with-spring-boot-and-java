@@ -3,7 +3,6 @@ package br.com.icaro.paixao.controllers;
 import br.com.icaro.paixao.exception.UnsupportedMathOperationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,6 +25,22 @@ public class MathController {
         return convertToDouble(numberOne) + convertToDouble(numberTwo);
 
     }
+
+
+    // http://localhost:8080/math/subtraction/3/5
+    @RequestMapping("subtraction/{numberOne}/{numberTwo}")
+    public Double subtraction (
+            @PathVariable("numberOne") String numberOne,
+            @PathVariable("numberTwo") String numberTwo
+
+    ) throws UnsupportedMathOperationException {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw new UnsupportedMathOperationException("PLease set a numeric value");
+
+        return convertToDouble(numberOne) - convertToDouble(numberTwo);
+
+    }
+
 
     private Double convertToDouble(String strNumber) throws UnsupportedMathOperationException {
 
