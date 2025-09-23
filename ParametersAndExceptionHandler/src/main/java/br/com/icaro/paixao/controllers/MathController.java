@@ -1,15 +1,19 @@
 package br.com.icaro.paixao.controllers;
 
 import br.com.icaro.paixao.exception.UnsupportedMathOperationException;
+import br.com.icaro.paixao.math.SimpleMath;
+import br.com.icaro.paixao.request.converters.NumberConverter;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static br.com.icaro.paixao.request.converters.NumberConverter.isNumeric;
+
 @RestController
 @RequestMapping("/math")
-
-
 public class MathController {
+
+    private SimpleMath math = new SimpleMath();
 
     // http://localhost:8080/math/sum/3/5
     @RequestMapping("sum/{numberOne}/{numberTwo}")
@@ -21,11 +25,10 @@ public class MathController {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo))
             throw new UnsupportedMathOperationException("PLease set a numeric value");
 
-        // Converte os valores para Double e retorna a soma
-        return convertToDouble(numberOne) + convertToDouble(numberTwo);
+
+        return math.sum(NumberConverter.convertToDouble(numberOne), NumberConverter.convertToDouble(numberTwo));
 
     }
-
 
     // http://localhost:8080/math/subtraction/3/5
     @RequestMapping("subtraction/{numberOne}/{numberTwo}")
@@ -37,29 +40,62 @@ public class MathController {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo))
             throw new UnsupportedMathOperationException("PLease set a numeric value");
 
-        return convertToDouble(numberOne) - convertToDouble(numberTwo);
+        return math.subtraction(NumberConverter.convertToDouble(numberOne), NumberConverter.convertToDouble(numberTwo));
 
     }
 
 
-    private Double convertToDouble(String strNumber) throws UnsupportedMathOperationException {
+    // http://localhost:8080/math/multiply/3/5
+    @RequestMapping("multiply/{numberOne}/{numberTwo}")
+    public Double multiply (
+            @PathVariable("numberOne") String numberOne,
+            @PathVariable("numberTwo") String numberTwo
 
-        // Se a string for nula ou vazia, lança exceção
-        if (strNumber == null || strNumber.isEmpty())
+    ) throws UnsupportedMathOperationException {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo))
             throw new UnsupportedMathOperationException("PLease set a numeric value");
 
-        // Substitui vírgulas por pontos para padronizar números decimais
-        String number = strNumber.replace(",","."); // R$ 5,00 USD 5.00
+        return math.multtply(NumberConverter.convertToDouble(numberOne), NumberConverter.convertToDouble(numberTwo));
 
-        // Converte a string para Double e retorna
-        return Double.parseDouble(number);
     }
 
-    private boolean isNumeric(String strNumber) {
+    // http://localhost:8080/math/division/3/5
+    @RequestMapping("division/{numberOne}/{numberTwo}")
+    public Double division (
+            @PathVariable("numberOne") String numberOne,
+            @PathVariable("numberTwo") String numberTwo
 
-        if (strNumber == null || strNumber.isEmpty()) return false;
-        String number = strNumber.replace(",","."); // R$ 5,00 USD 5.00
-        return number.matches("[-+]?[0-9]*\\.?[0-9]+"); // Usa expressão regular (regex) para verificar se a string é um número válido
+    ) throws UnsupportedMathOperationException {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw new UnsupportedMathOperationException("PLease set a numeric value");
+
+        return math.division(NumberConverter.convertToDouble(numberOne), NumberConverter.convertToDouble(numberTwo));
+
+    }
+
+    // http://localhost:8080/math/average/3/5
+    @RequestMapping("average/{numberOne}/{numberTwo}")
+    public Double average (
+            @PathVariable("numberOne") String numberOne,
+            @PathVariable("numberTwo") String numberTwo
+
+    ) throws UnsupportedMathOperationException {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw new UnsupportedMathOperationException("PLease set a numeric value");
+
+        return math.average((NumberConverter.convertToDouble(numberOne)), NumberConverter.convertToDouble(numberTwo));
+
+    }
+
+    // http://localhost:8080/math/source/3
+    @RequestMapping("source/{numberOne}")
+    public Double source (
+            @PathVariable("numberOne") String numberOne
+    ) throws UnsupportedMathOperationException {
+        if (!isNumeric(numberOne))
+            throw new UnsupportedMathOperationException("PLease set a numeric value");
+
+        return math.source(NumberConverter.convertToDouble(numberOne));
 
     }
 
