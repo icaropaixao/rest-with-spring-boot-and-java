@@ -1,7 +1,8 @@
 package br.com.icaro.paixao.exception.hadler;
 
 import br.com.icaro.paixao.exception.ExceptionResponse;
-import br.com.icaro.paixao.exception.UnsupportedMathOperationException;
+import br.com.icaro.paixao.exception.ResourceNorFoundException;
+import br.com.icaro.paixao.exception.ResourceNorFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,8 +32,8 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
     }
 
     // Trata exceções específicas do tipo UnsupportedMathOperationException
-    @ExceptionHandler({UnsupportedMathOperationException.class})
-    public final ResponseEntity<ExceptionResponse> handleBadRequest(Exception ex, WebRequest request) {
+    @ExceptionHandler({ResourceNorFoundException.class})
+    public final ResponseEntity<ExceptionResponse> handleNotFound(Exception ex, WebRequest request) {
         // Cria objeto de resposta com data, mensagem de erro e detalhes da requisição
         ExceptionResponse response = new ExceptionResponse(
                 new Date(),
@@ -40,7 +41,7 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
                 request.getDescription(false));
 
         // Retorna resposta com status 400 (Bad Request)
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
 

@@ -1,9 +1,8 @@
 package br.com.icaro.paixao.controllers;
 
 
-import br.com.icaro.paixao.PersonServices;
+import br.com.icaro.paixao.services.PersonServices;
 import br.com.icaro.paixao.model.Person;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findById(@PathVariable("id") String id) {
+    public Person findById(@PathVariable("id") Long id) {
         return personServices.findById(id);
 
     }
@@ -50,7 +49,7 @@ public class PersonController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable("id") String id) {
+    public void delete(@PathVariable("id") Long id) {
        personServices.delete(id);
 
     }
