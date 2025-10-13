@@ -4,6 +4,7 @@ package br.com.icaro.paixao.controllers;
 import br.com.icaro.paixao.services.PersonServices;
 import br.com.icaro.paixao.model.Person;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,25 +13,26 @@ import java.util.List;
 @RequestMapping("/person")
 public class PersonController {
 
-
+    //JEITO ANTIGO DE INJETAR
     // @Autowired
-    // private PersonServices personServices; ANTIGO
-    private final PersonServices personServices;
+    // private PersonServices personServices;
 
-    // o Spring injeta automaticamente a dependência pelo construtor
+    // NOVO
+    private final PersonServices personServices;
     public PersonController(PersonServices personServices) {
         this.personServices = personServices;
+    }
+
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) // indicando que a resposta é em formato JSON
+    public List<Person> findAll() {
+        return personServices.findAll();
+
     }
 
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public Person findById(@PathVariable("id") Long id) {
         return personServices.findById(id);
-
-    }
-
-    @GetMapping()
-    public List<Person> findAll() {
-        return personServices.findAll();
 
     }
 
@@ -49,8 +51,9 @@ public class PersonController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
        personServices.delete(id);
+       return ResponseEntity.noContent().build();
 
     }
 
