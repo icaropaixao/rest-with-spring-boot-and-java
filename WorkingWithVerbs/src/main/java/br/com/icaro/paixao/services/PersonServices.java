@@ -3,19 +3,20 @@ package br.com.icaro.paixao.services;
 import br.com.icaro.paixao.exception.ResourceNorFoundException;
 import br.com.icaro.paixao.model.Person;
 import br.com.icaro.paixao.repository.PersonRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 
 @Service
 public class PersonServices {
 
     private final AtomicLong counter = new AtomicLong();
-    private Logger logger = Logger.getLogger(PersonServices.class.getName());
+    private Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
 
     // INJECTION
     private final PersonRepository personRepository;
