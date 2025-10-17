@@ -1,12 +1,14 @@
 package br.com.icaro.paixao.services;
 
+import br.com.icaro.paixao.data.dto.PersonDTO;
 import br.com.icaro.paixao.exception.ResourceNorFoundException;
+import static br.com.icaro.paixao.mapper.ObjectMapper.parseListObjects;
+import static br.com.icaro.paixao.mapper.ObjectMapper.parseObject;
 import br.com.icaro.paixao.model.Person;
 import br.com.icaro.paixao.repository.PersonRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
@@ -25,37 +27,45 @@ public class PersonServices {
     }
 
 
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
         logger.info("Finding All Persons ");
 
-        return personRepository.findAll();
+        return parseListObjects(personRepository.findAll(), PersonDTO.class);
+
     }
 
-    public Person findById(Long id) {
+    public PersonDTO findById(Long id) {
         logger.info("Finding person by id: " + id);
 
-        return personRepository.findById(id).orElseThrow(()-> new ResourceNorFoundException("No records found for this ID"));
+        var entity = personRepository.findById(id)
+                .orElseThrow(()-> new ResourceNorFoundException("No records found for this ID"));
+
+        return parseObject(entity, PersonDTO.class); // trasnformando em DTO
 
     }
 
-    public Person create(Person person) {
+    public PersonDTO create(PersonDTO person) {
         logger.info("Create One person: " + person);
 
+        var entity = parseObject(person, Person.class);
 
-        return personRepository.save(person);
+        return parseObject(personRepository.save(entity), PersonDTO.class);
+
+
     }
 
-    public Person update(Person person) {
+    public PersonDTO update(PersonDTO person) {
         logger.info("Updating One person: " + person);
 
-        Person entity = personRepository.findById(person.getId()).orElseThrow(()-> new ResourceNorFoundException("No records found for this ID"));
+        Person entity = personRepository.findById(person.getId())
+                .orElseThrow(()-> new ResourceNorFoundException("No records found for this ID"));
 
         entity.setFirstName(person.getFirstName());
         entity.setLastName(person.getLastName());
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return personRepository.save(person);
+        return parseObject(personRepository.save(entity), PersonDTO.class);
     }
 
     public void delete(Long id) {

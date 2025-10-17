@@ -1,8 +1,8 @@
 package br.com.icaro.paixao.controllers;
 
 
+import br.com.icaro.paixao.data.dto.PersonDTO;
 import br.com.icaro.paixao.services.PersonServices;
-import br.com.icaro.paixao.model.Person;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,26 +25,26 @@ public class PersonController {
 
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) // indicando que a resposta é em formato JSON
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
         return personServices.findAll();
 
     }
 
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findById(@PathVariable("id") Long id) {
+    public PersonDTO findById(@PathVariable("id") Long id) {
         return personServices.findById(id);
 
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Person create(@RequestBody Person person) {
+    public PersonDTO create(@RequestBody PersonDTO person) {
 
         return personServices.create(person);
 
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Person update(@RequestBody Person person) {
+    public PersonDTO update(@RequestBody PersonDTO person) {
 
         return personServices.update(person);
 
