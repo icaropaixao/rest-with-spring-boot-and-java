@@ -1,10 +1,11 @@
-package br.com.icaro.paixao.data.dto;
+package br.com.icaro.paixao.data.dto.v2;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 
-public class PersonDTO implements Serializable {
+public class PersonDTOV2 implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -13,14 +14,21 @@ public class PersonDTO implements Serializable {
 
     private String lastName;
 
-
     private String address;
-
 
     private String gender;
 
-    public PersonDTO() {}
+    private Date birthDate;
 
+    public PersonDTOV2() {}
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
     public Long getId() {
         return id;
@@ -62,16 +70,16 @@ public class PersonDTO implements Serializable {
         this.gender = gender;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        PersonDTO person = (PersonDTO) o;
-        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address) && Objects.equals(gender, person.gender);
+        PersonDTOV2 personDTOV2 = (PersonDTOV2) o;
+        return Objects.equals(id, personDTOV2.id) && Objects.equals(firstName, personDTOV2.firstName) && Objects.equals(lastName, personDTOV2.lastName) && Objects.equals(address, personDTOV2.address) && Objects.equals(gender, personDTOV2.gender) && Objects.equals(birthDate, personDTOV2.birthDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, gender);
+        return Objects.hash(id, firstName, lastName, address, gender, birthDate);
     }
-
 }

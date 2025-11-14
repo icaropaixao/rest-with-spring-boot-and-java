@@ -3,7 +3,7 @@ package br.com.icaro.paixao.unitetests.mapper.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.icaro.paixao.data.dto.PersonDTO;
+import br.com.icaro.paixao.data.dto.v1.PersonDTO;
 import br.com.icaro.paixao.model.Person;
 
 public class MockPerson {

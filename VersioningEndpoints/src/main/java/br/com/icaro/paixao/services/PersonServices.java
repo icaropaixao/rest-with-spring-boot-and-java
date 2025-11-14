@@ -1,9 +1,12 @@
 package br.com.icaro.paixao.services;
 
-import br.com.icaro.paixao.data.dto.PersonDTO;
+import br.com.icaro.paixao.data.dto.v1.PersonDTO;
+import br.com.icaro.paixao.data.dto.v2.PersonDTOV2;
 import br.com.icaro.paixao.exception.ResourceNorFoundException;
 import static br.com.icaro.paixao.mapper.ObjectMapper.parseListObjects;
 import static br.com.icaro.paixao.mapper.ObjectMapper.parseObject;
+
+import br.com.icaro.paixao.mapper.custom.PersonMapper;
 import br.com.icaro.paixao.model.Person;
 import br.com.icaro.paixao.repository.PersonRepository;
 import org.slf4j.LoggerFactory;
@@ -22,10 +25,12 @@ public class PersonServices {
 
     // INJECTION
     private final PersonRepository personRepository;
-    public PersonServices(PersonRepository personRepository) {
+    private final PersonMapper converter;
+    public PersonServices(PersonRepository personRepository, PersonMapper converter) {
         this.personRepository = personRepository;
-    }
+        this.converter = converter;
 
+    }
 
     public List<PersonDTO> findAll() {
         logger.info("Finding All Persons ");
@@ -50,6 +55,16 @@ public class PersonServices {
         var entity = parseObject(person, Person.class);
 
         return parseObject(personRepository.save(entity), PersonDTO.class);
+
+
+    }
+
+    public PersonDTOV2 createV2(PersonDTOV2 person) {
+        logger.info("Create One person V2: " + person);
+
+        var entity = converter.convertDTOToEntity(person);
+
+        return converter.convertEntityToDTO(personRepository.save(entity));
 
 
     }

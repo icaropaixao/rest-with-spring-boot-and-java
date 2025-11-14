@@ -1,7 +1,8 @@
 package br.com.icaro.paixao.controllers;
 
 
-import br.com.icaro.paixao.data.dto.PersonDTO;
+import br.com.icaro.paixao.data.dto.v1.PersonDTO;
+import br.com.icaro.paixao.data.dto.v2.PersonDTOV2;
 import br.com.icaro.paixao.services.PersonServices;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,17 @@ public class PersonController {
     public PersonDTO create(@RequestBody PersonDTO person) {
 
         return personServices.create(person);
+
+    }
+
+    // V2 de Create, com data de nascimento inclusa
+
+    @PostMapping(value = "/v2",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public PersonDTOV2 createV2(@RequestBody PersonDTOV2 person) {
+
+        return personServices.createV2(person);
 
     }
 
