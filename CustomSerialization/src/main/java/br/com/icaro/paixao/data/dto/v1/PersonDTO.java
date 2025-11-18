@@ -4,11 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import br.com.icaro.paixao.serializer.GenderSerializer;
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 
-@JsonPropertyOrder({"id","first_name","last_name","address","gender"})
+@JsonPropertyOrder({"id","first_name","last_name","address","gender","phoneNumber", "sensitiveData","birthDay"})
+@JsonFilter("PersonFilter") //Filtro criado na classe config para ocultar campos
 public class PersonDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -17,17 +25,28 @@ public class PersonDTO implements Serializable {
     @JsonProperty("first_name")
     private String firstName;
 
+    //o campo só aparece se não estiver NULL
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String phoneNumber;
+
     @JsonProperty("last_name")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String lastName;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private Date birthDay;
 
     private String address;
 
+
+    private String sensitiveData;
+
     // Para Ocultar na requisição
-    @JsonIgnore
+   // @JsonIgnore
+    @JsonSerialize(using= GenderSerializer.class) // a classe que vamos usar para essa requisição
     private String gender;
 
     public PersonDTO() {}
-
 
     public Long getId() {
         return id;
@@ -69,16 +88,41 @@ public class PersonDTO implements Serializable {
         this.gender = gender;
     }
 
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getSensitiveData() {
+
+        return sensitiveData;
+    }
+
+    public void setSensitiveData(String sensitiveData) {
+        this.sensitiveData = sensitiveData;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        PersonDTO person = (PersonDTO) o;
-        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address) && Objects.equals(gender, person.gender);
+        PersonDTO personDTO = (PersonDTO) o;
+        return Objects.equals(id, personDTO.id) && Objects.equals(firstName, personDTO.firstName) && Objects.equals(phoneNumber, personDTO.phoneNumber) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(birthDay, personDTO.birthDay) && Objects.equals(address, personDTO.address) && Objects.equals(sensitiveData, personDTO.sensitiveData) && Objects.equals(gender, personDTO.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, gender);
+        return Objects.hash(id, firstName, phoneNumber, lastName, birthDay, address, sensitiveData, gender);
     }
 
 }
