@@ -36,11 +36,20 @@ public class PersonServices {
     }
 
     public List<PersonDTO> findAll() {
+
+        // Registra no log que vai buscar todas as pessoas.
         logger.info("Finding All Persons ");
 
-        return parseListObjects(personRepository.findAll(), PersonDTO.class);
+        // Busca todas as pessoas no banco e converte a lista para PersonDTO.
+        var persons = parseListObjects(personRepository.findAll(), PersonDTO.class);
 
+        // Adiciona os links HATEOAS em cada DTO da lista.
+        persons.forEach(this::addHateoasLinks);
+
+        // Retorna a lista final.
+        return persons;
     }
+
 
     public PersonDTO findById(Long id) {
         logger.info("Finding person by id: " + id);
@@ -51,9 +60,8 @@ public class PersonServices {
         var dto = parseObject(entity, PersonDTO.class); // trasnformando em DTO
 
         // LINK HATEOAS REFERENCIANDO AO FINDBYID
-        dto.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel().withType("GET"));
 
-
+        addHateoasLinks(dto);
 
         return dto;
     }
@@ -63,8 +71,10 @@ public class PersonServices {
 
         var entity = parseObject(person, Person.class);
 
-        return parseObject(personRepository.save(entity), PersonDTO.class);
+        var dto = parseObject(personRepository.save(entity), PersonDTO.class);
 
+        addHateoasLinks(dto);
+        return dto;
 
     }
 
@@ -89,7 +99,10 @@ public class PersonServices {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return parseObject(personRepository.save(entity), PersonDTO.class);
+        var dto = parseObject(personRepository.save(entity), PersonDTO.class);
+
+        addHateoasLinks(dto);
+        return dto;
     }
 
     public void delete(Long id) {
@@ -99,8 +112,20 @@ public class PersonServices {
                 .orElseThrow(()-> new ResourceNorFoundException("No records found for this ID"));
 
         personRepository.delete(entity);
+
+
     }
 
+
+    // LINKs HATEOAS para os métodos
+    private void  addHateoasLinks(PersonDTO dto) {
+         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
+         dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("delete").withType("GET"));
+         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
+         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
+         dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
+
+    }
 
 }
 
