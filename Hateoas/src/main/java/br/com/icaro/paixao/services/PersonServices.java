@@ -16,19 +16,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 
 
 @Service
 public class PersonServices {
 
-    private final AtomicLong counter = new AtomicLong();
     private Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
 
     // INJECTION
     private final PersonRepository personRepository;
     private final PersonMapper converter;
+
     public PersonServices(PersonRepository personRepository, PersonMapper converter) {
         this.personRepository = personRepository;
         this.converter = converter;
