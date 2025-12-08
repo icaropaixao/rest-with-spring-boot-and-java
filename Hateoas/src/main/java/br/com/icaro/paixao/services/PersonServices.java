@@ -3,7 +3,8 @@ package br.com.icaro.paixao.services;
 import br.com.icaro.paixao.controllers.PersonController;
 import br.com.icaro.paixao.data.dto.v1.PersonDTO;
 import br.com.icaro.paixao.data.dto.v2.PersonDTOV2;
-import br.com.icaro.paixao.exception.ResourceNorFoundException;
+import br.com.icaro.paixao.exception.RequiredObjectIsNullException;
+import br.com.icaro.paixao.exception.ResourceNotFoundException;
 import static br.com.icaro.paixao.mapper.ObjectMapper.parseListObjects;
 import static br.com.icaro.paixao.mapper.ObjectMapper.parseObject;
 
@@ -54,7 +55,7 @@ public class PersonServices {
         logger.info("Finding person by id: " + id);
 
         var entity = personRepository.findById(id)
-                .orElseThrow(()-> new ResourceNorFoundException("No records found for this ID"));
+                .orElseThrow(()-> new ResourceNotFoundException("No records found for this ID"));
 
         var dto = parseObject(entity, PersonDTO.class); // trasnformando em DTO
 
@@ -66,6 +67,10 @@ public class PersonServices {
     }
 
     public PersonDTO create(PersonDTO person) {
+
+        if (person == null) throw new RequiredObjectIsNullException();
+
+
         logger.info("Create One person: " + person);
 
         var entity = parseObject(person, Person.class);
@@ -88,10 +93,14 @@ public class PersonServices {
     }
 
     public PersonDTO update(PersonDTO person) {
+
+        if (person == null) throw new RequiredObjectIsNullException();
+
+
         logger.info("Updating One person: " + person);
 
         Person entity = personRepository.findById(person.getId())
-                .orElseThrow(()-> new ResourceNorFoundException("No records found for this ID"));
+                .orElseThrow(()-> new ResourceNotFoundException("No records found for this ID"));
 
         entity.setFirstName(person.getFirstName());
         entity.setLastName(person.getLastName());
@@ -108,7 +117,7 @@ public class PersonServices {
         logger.info("deleting One person: ");
 
         Person entity = personRepository.findById(id)
-                .orElseThrow(()-> new ResourceNorFoundException("No records found for this ID"));
+                .orElseThrow(()-> new ResourceNotFoundException("No records found for this ID"));
 
         personRepository.delete(entity);
 
