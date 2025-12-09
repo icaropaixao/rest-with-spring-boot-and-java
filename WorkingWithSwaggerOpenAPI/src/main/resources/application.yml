@@ -19,3 +19,10 @@ logging:
     br.com.icaro.paixao: info
     # root: error
 
+springdoc:
+  paths-to-match: /api/**/v1/**
+  swagger-ui:
+    use-root-path: true #Ler apenas o person controller
+
+
+
