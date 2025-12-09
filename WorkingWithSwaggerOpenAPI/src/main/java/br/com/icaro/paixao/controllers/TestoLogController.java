@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 @RestController
 public class TestoLogController {
 
-    private final Logger logger = LoggerFactory.getLogger(TestoLogController.class.getName());
+    private Logger logger = LoggerFactory.getLogger(TestoLogController.class.getName());
 
 
     @GetMapping("/test")

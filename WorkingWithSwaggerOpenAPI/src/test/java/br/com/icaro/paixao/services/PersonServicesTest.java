@@ -1,10 +1,14 @@
 package br.com.icaro.paixao.services;
 
 import br.com.icaro.paixao.data.dto.v1.PersonDTO;
+//import br.com.icaro.paixao.exception.RequiredObjectIsNullException;
+
 import br.com.icaro.paixao.exception.RequiredObjectIsNullException;
 import br.com.icaro.paixao.model.Person;
 import br.com.icaro.paixao.repository.PersonRepository;
 import br.com.icaro.paixao.unitetests.mapper.mocks.MockPerson;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,44 +78,48 @@ class PersonServicesTest {
         assertNotNull(result.getLinks());
 
         // Verifica se existe o link "self" com o GET correto
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("self") &&
                                 link.getHref().endsWith("/api/person/v1/1") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                ));
 
         // Verifica se existe o link para buscar todos
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("findAll") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                )
+        );
 
         // Verifica se o link de criação existe
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("create") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "POST")
-                );
+                                link.getType().equals("POST")
+                )
+        );
 
         // Verifica se o link de atualização existe
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("update") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "PUT")
-                );
+                                link.getType().equals("PUT")
+                )
+        );
 
         // Verifica se o link de exclusão existe
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("delete") &&
                                 link.getHref().endsWith("/api/person/v1/1") &&
-                                Objects.equals(link.getType(), "DELETE")
-                );
+                                link.getType().equals("DELETE")
+                )
+        );
 
         // Verifica se os dados vieram corretos
         assertEquals("Address Test1", result.getAddress());
@@ -148,40 +156,44 @@ class PersonServicesTest {
         assertNotNull(result.getLinks());
 
         // Verificações dos links HATEOAS (self, findAll, create, update, delete)
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("self") &&
                                 link.getHref().endsWith("/api/person/v1/1") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                ));
 
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("findAll") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                )
+        );
 
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("create") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "POST")
-                );
+                                link.getType().equals("POST")
+                )
+        );
 
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("update") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "PUT")
-                );
+                                link.getType().equals("PUT")
+                )
+        );
 
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("delete") &&
                                 link.getHref().endsWith("/api/person/v1/1") &&
-                                Objects.equals(link.getType(), "DELETE")
-                );
+                                link.getType().equals("DELETE")
+                )
+        );
 
         // Verifica os dados
         assertEquals("Address Test1", result.getAddress());
@@ -235,40 +247,44 @@ class PersonServicesTest {
         assertNotNull(result.getLinks());
 
         // Verificações de links HATEOAS
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("self") &&
                                 link.getHref().endsWith("/api/person/v1/1") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                ));
 
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("findAll") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                )
+        );
 
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("create") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "POST")
-                );
+                                link.getType().equals("POST")
+                )
+        );
 
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("update") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "PUT")
-                );
+                                link.getType().equals("PUT")
+                )
+        );
 
-        result.getLinks().stream()
+        assertNotNull(result.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("delete") &&
                                 link.getHref().endsWith("/api/person/v1/1") &&
-                                Objects.equals(link.getType(), "DELETE")
-                );
+                                link.getType().equals("DELETE")
+                )
+        );
 
         // Verifica os dados
         assertEquals("Address Test1", result.getAddress());
@@ -338,40 +354,44 @@ class PersonServicesTest {
         assertNotNull(personOne.getLinks());
 
         // Verificações de links HATEOAS
-        personOne.getLinks().stream()
+        assertNotNull(personOne.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("self") &&
                                 link.getHref().endsWith("/api/person/v1/1") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                ));
 
-        personOne.getLinks().stream()
+        assertNotNull(personOne.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("findAll") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                )
+        );
 
-        personOne.getLinks().stream()
+        assertNotNull(personOne.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("create") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "POST")
-                );
+                                link.getType().equals("POST")
+                )
+        );
 
-        personOne.getLinks().stream()
+        assertNotNull(personOne.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("update") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "PUT")
-                );
+                                link.getType().equals("PUT")
+                )
+        );
 
-        personOne.getLinks().stream()
+        assertNotNull(personOne.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("delete") &&
                                 link.getHref().endsWith("/api/person/v1/1") &&
-                                Objects.equals(link.getType(), "DELETE")
-                );
+                                link.getType().equals("DELETE")
+                )
+        );
 
         // Verifica os dados
         assertEquals("Address Test1", personOne.getAddress());
@@ -390,40 +410,44 @@ class PersonServicesTest {
         assertNotNull(personFour.getLinks());
 
         // Verificações de links HATEOAS
-        personFour.getLinks().stream()
+        assertNotNull(personFour.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("self") &&
                                 link.getHref().endsWith("/api/person/v1/4") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                ));
 
-        personFour.getLinks().stream()
+        assertNotNull(personFour.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("findAll") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "GET")
-                );
+                                link.getType().equals("GET")
+                )
+        );
 
-        personFour.getLinks().stream()
+        assertNotNull(personFour.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("create") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "POST")
-                );
+                                link.getType().equals("POST")
+                )
+        );
 
-        personFour.getLinks().stream()
+        assertNotNull(personFour.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("update") &&
                                 link.getHref().endsWith("/api/person/v1") &&
-                                Objects.equals(link.getType(), "PUT")
-                );
+                                link.getType().equals("PUT")
+                )
+        );
 
-        personFour.getLinks().stream()
+        assertNotNull(personFour.getLinks().stream()
                 .anyMatch(link ->
                         link.getRel().value().equals("delete") &&
                                 link.getHref().endsWith("/api/person/v1/4") &&
-                                Objects.equals(link.getType(), "DELETE")
-                );
+                                link.getType().equals("DELETE")
+                )
+        );
 
         // Verifica os dados
         assertEquals("Address Test4", personFour.getAddress());

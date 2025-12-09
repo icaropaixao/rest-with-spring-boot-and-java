@@ -11,7 +11,7 @@ public class ObjectMapper {
     // Cria um mapeador (mapper) usando o Dozer,
     // que é uma biblioteca para copiar dados de um objeto para outro.
     // Exemplo: converter uma entidade para um DTO (Data Transfer Object).
-    private static final Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+    private static Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 
     // Metodo genérico que converte (ou "mapeia") um objeto de origem (origin)
     // para um objeto de destino (destination), que pode ser de outro tipo/classe.
