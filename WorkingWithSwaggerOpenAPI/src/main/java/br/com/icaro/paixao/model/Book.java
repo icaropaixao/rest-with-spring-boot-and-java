@@ -3,26 +3,30 @@ package br.com.icaro.paixao.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "books")
-public class Book {
+public class Book implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "author", nullable = false, length = 80)
+    @Column(nullable = false, length = 180)
     private String author;
 
     @Column(name = "launch_date", nullable = false)
-    private Date launchdate;
+    @Temporal(TemporalType.DATE) // esté campo é um campo de datas
+    private Date launchDate;
 
-    @Column(name = "price", nullable = false)
+    @Column(nullable = false)
     private Double price;
 
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false, length = 250)
     private String title;
 
     public Book() {}
@@ -43,12 +47,12 @@ public class Book {
         this.author = author;
     }
 
-    public Date getLaunchdate() {
-        return launchdate;
+    public Date getLaunchDate() {
+        return launchDate;
     }
 
-    public void setLaunchdate(Date launchdate) {
-        this.launchdate = launchdate;
+    public void setLaunchDate(Date launchdate) {
+        this.launchDate = launchdate;
     }
 
     public Double getPrice() {
@@ -67,5 +71,16 @@ public class Book {
         this.title = title;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(id, book.id) && Objects.equals(author, book.author) && Objects.equals(launchDate, book.launchDate) && Objects.equals(price, book.price) && Objects.equals(title, book.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, author, launchDate, price, title);
+    }
 
 }

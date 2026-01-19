@@ -1,13 +1,10 @@
 package br.com.icaro.paixao.data.dto.v1;
 
-
-import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-
 
 public class BookDTO extends RepresentationModel<BookDTO> implements Serializable {
 
@@ -16,7 +13,7 @@ public class BookDTO extends RepresentationModel<BookDTO> implements Serializabl
     private Long id;
 
     private String author;
-    private Date launchdate;
+    private Date launchDate;
     private Double price;
     private String title;
 
@@ -38,12 +35,12 @@ public class BookDTO extends RepresentationModel<BookDTO> implements Serializabl
         this.author = author;
     }
 
-    public Date getLaunchdate() {
-        return launchdate;
+    public Date getLaunchDate() {
+        return launchDate;
     }
 
-    public void setLaunchdate(Date launchdate) {
-        this.launchdate = launchdate;
+    public void setLaunchDate(Date launchDate) {
+        this.launchDate = launchDate;
     }
 
     public Double getPrice() {
@@ -66,12 +63,12 @@ public class BookDTO extends RepresentationModel<BookDTO> implements Serializabl
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         BookDTO bookDTO = (BookDTO) o;
-        return Objects.equals(id, bookDTO.id) && Objects.equals(author, bookDTO.author) && Objects.equals(launchdate, bookDTO.launchdate) && Objects.equals(price, bookDTO.price) && Objects.equals(title, bookDTO.title);
+        return Objects.equals(id, bookDTO.id) && Objects.equals(author, bookDTO.author) && Objects.equals(launchDate, bookDTO.launchDate) && Objects.equals(price, bookDTO.price) && Objects.equals(title, bookDTO.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, author, launchdate, price, title);
+        return Objects.hash(id, author, launchDate, price, title);
     }
 
 }
